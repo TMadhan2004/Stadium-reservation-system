@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #error-message {
+      color: red;
+      margin-top: 10px;
+    }
+
+    #login-link {
+      margin-top: 10px;
+    }
+  </style>
+  <title>Sign Up</title>
+</head>
+<body>
+  <div class="container">
+    <form id="signupForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" required>
+
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="tel" id="phoneNumber" name="phoneNumber" required>
+
+      <label for="newPassword">Password:</label>
+      <input type="password" id="newPassword" name="newPassword" required>
+
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+      <button type="button" onclick="registerUser()">Sign Up</button>
+    </form>
+    <p id="error-message"></p>
+    <p id="login-link">Already have an account? <a href="login.html">Login</a></p>
+  </div>
+
+  <script>
+    function registerUser() {
+      var username = document.getElementById('username').value;
+      var email = document.getElementById('email').value;
+      var age = document.getElementById('age').value;
+      var phoneNumber = document.getElementById('phoneNumber').value;
+      var newPassword = document.getElementById('newPassword').value;
+      var confirmPassword = document.getElementById('confirmPassword').value;
+      var errorMessage = document.getElementById('error-message');
+
+      // Password and Confirm Password must match
+      if (newPassword !== confirmPassword) {
+        errorMessage.innerHTML = 'Passwords do not match';
+        errorMessage.style.color = 'red';
+        return;
+      }
+
+      // Add your registration logic here (e.g., store the new user in a database)
+      // For simplicity, we're just displaying a success message
+      errorMessage.innerHTML = 'Account created successfully!';
+      errorMessage.style.color = 'green';
+    }
+  </script>
+</body>
+</html>

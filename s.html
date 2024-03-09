@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    select {
+      padding: 8px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #event-list {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    #event-list a {
+      display: block;
+      color: black;
+      text-decoration: none;
+      margin-bottom: 5px;
+      transition: color 0.3s ease;
+    }
+
+    #event-list a:hover {
+      color: #333;
+    }
+  </style>
+  <title>Stadium</title>
+</head>
+<body style="background-image: url('stadium.jpg');">
+  <div class="container">
+    <h1>Date Selection</h1>
+
+    <label for="day">Day:</label>
+    <select id="day"></select>
+
+    <label for="month">Month:</label>
+    <select id="month"></select>
+
+    <label for="year">Year:</label>
+    <select id="year"></select>
+
+    <button onclick="changeDate()">Change Date</button>
+
+    <div id="result"></div>
+    <div id="event-list"></div>
+
+    <script>
+      // Populate dropdown with options
+      function populateDropdown(selectId, start, end) {
+        var select = document.getElementById(selectId);
+        for (var i = start; i <= end; i++) {
+          var option = document.createElement("option");
+          option.value = i;
+          option.text = i;
+          select.add(option);
+        }
+      }
+
+      populateDropdown("day", 1, 31);
+      populateDropdown("month", 1, 12);
+      populateDropdown("year", 2000, 2024);
+
+      function changeDate() {
+        var day = document.getElementById('day').value;
+        var month = document.getElementById('month').value;
+        var year = document.getElementById('year').value;
+        var resultContainer = document.getElementById('result');
+        var eventListContainer = document.getElementById('event-list');
+
+        var dateKey = `${day}-${month}-${year}`;
+        var specialDates = {
+          '8-11-2022': 'PAK VS ENG <br> IND VS AUS <br> NZ VS SL',
+          '11-11-2023': 'PAK VS ENG <br> IND VS AUS <br> NZ VS SL',
+          '31-12-2023': 'PAK VS ENG <br> IND VS AUS <br> NZ VS SL',
+          '26-12-2022': 'PAK VS ENG <br> IND VS AUS <br> NZ VS SL'
+        };
+
+        if (specialDates[dateKey]) {
+          eventListContainer.innerHTML = `<p>List of Events For the Given Date:</p>
+                                          <div id="event-list">
+                                            <a href="tickets.html?event=${encodeURIComponent(specialDates[dateKey])}">${specialDates[dateKey]}</a>
+                                          </div>`;
+        } else {
+          eventListContainer.innerHTML = ''; // Clear the event list if not a special date
+        }
+
+        resultContainer.innerHTML = `<p>Selected Date: ${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}</p>`;
+      }
+    </script>
+  </div>
+</body>
+</html>
