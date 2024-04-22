@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('index.jpg'); /* Add background image */
+      background-size: cover; /* Cover the entire background */
+      background-position: center; /* Center the background image */
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background for container */
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px; /* Added max-width for better responsiveness */
+      width: 100%; /* Ensure container takes full width */
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 8px; /* Slightly reduce margin */
+      font-weight: bold; /* Make labels bold */
+    }
+
+    input {
+      padding: 10px; /* Increase input padding */
+      margin-bottom: 20px; /* Increase margin bottom for inputs */
+      border: 1px solid #ccc;
+      border-radius: 5px; /* Increase border radius */
+    }
+
+    button {
+      padding: 12px 20px; /* Increase button padding */
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s; /* Add transition for smoother hover effect */
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #error-message {
+      color: red;
+      margin-top: 10px;
+    }
+
+    #signup-link {
+      margin-top: 15px; /* Increase margin top for signup link */
+      text-align: center; /* Center align signup link */
+    }
+
+    #signup-link a {
+      color: #4caf50; /* Change link color */
+      text-decoration: none; /* Remove underline from link */
+    }
+
+    #signup-link a:hover {
+      text-decoration: underline; /* Add underline on hover */
+    }
+  </style>
+  <title>Login Form</title>
+</head>
+<body>
+  <div class="container">
+    <form id="loginForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="button" onclick="validateLogin()">Login</button>
+    </form>
+    <p id="error-message"></p>
+    <p id="signup-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
+  </div>
+
+  <script>
+    async function validateLogin() {
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+      var errorMessage = document.getElementById('error-message');
+
+      try {
+        // Fetch user data from the endpoint
+        const response = await fetch('http://localhost:3000/api/sign');
+        const userData = await response.json();
+
+        // Check if username and password match any user in the data
+        const user = userData.find(user => user.Username === username && user.Password === password);
+
+        if (user) {
+          errorMessage.innerHTML = 'Login successful!';
+          errorMessage.style.color = 'green';
+
+          // Store username and phone number in localStorage
+          localStorage.setItem('Username', user.Username);
+          localStorage.setItem('Phonenumber', user.Phonenumber);
+
+          // Alert and redirect to the next page (stadium.html)
+          alert('Login successful! Redirecting to the stadium page.');
+          window.location.href = 'stadium.html';
+        } else {
+          errorMessage.innerHTML = 'Invalid username or password';
+          errorMessage.style.color = 'red';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        errorMessage.innerHTML = 'Error: Unable to login';
+        errorMessage.style.color = 'red';
+      }
+    }
+  </script>
+</body>
+</html>

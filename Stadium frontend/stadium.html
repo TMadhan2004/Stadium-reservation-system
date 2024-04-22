@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Your CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+      max-width: 800px; /* Increased maximum width */
+      width: 90%; /* Set width to 90% of container */
+    }
+
+    select {
+      padding: 8px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #event-list {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    #event-list a {
+      display: block;
+      color: black;
+      text-decoration: none;
+      margin-bottom: 5px;
+      transition: color 0.3s ease;
+    }
+
+    #event-list a:hover {
+      color: #333;
+    }
+  </style>
+  <title>Stadium</title>
+</head>
+<body style="background-image: url('stadium.jpg');">
+  <div class="container">
+    <h1>Match Details</h1>
+
+    <div id="matchDetails"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        fetch("http://localhost:3000/api/matches")
+          .then(response => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then(data => {
+            const matchDetailsDiv = document.getElementById('matchDetails');
+            // Iterate over each match
+            data.forEach(match => {
+              const matchDiv = document.createElement('div');
+              matchDiv.classList.add('match');
+
+              // Extract match details
+              const matchId = match._id;
+              const matchName = match.MatchName || "N/A";
+              const time = match.Time || "N/A";
+              const stadiumName = match.StadiumName || "N/A";
+              const ticketsAvailable = match.Ticketsavailable || "N/A";
+
+              // Create HTML string for match details
+              const matchDetailsHTML = `
+                <p>Match Name: ${matchName}</p>
+                <p>Time: ${time}</p>
+                <p>Stadium Name: ${stadiumName}</p>
+                <p>Tickets Available: ${ticketsAvailable}</p>
+                <button onclick="bookNow('${matchId}', '${matchName}', ${ticketsAvailable})">Book Now</button>
+              `;
+
+              matchDiv.innerHTML = matchDetailsHTML;
+              matchDetailsDiv.appendChild(matchDiv);
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching match details:', error);
+            document.getElementById('matchDetails').innerHTML = '<p>Error fetching match details</p>';
+          });
+      });
+
+      function bookNow(matchId, matchName, ticketsAvailable) {
+        const ticketsToBook = prompt(`How many tickets would you like to book for "${matchName}"?`);
+        if (ticketsToBook !== null) {
+          const updatedTicketsAvailable = ticketsAvailable - parseInt(ticketsToBook, 10);
+          if (updatedTicketsAvailable < 0) {
+            alert('Not enough tickets available!');
+            return;
+          }
+
+          const newData = { Ticketsavailable: updatedTicketsAvailable };
+          fetch(`http://localhost:3000/api/matches/${matchId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newData)
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            alert(`Successfully booked ${ticketsToBook} tickets for "${matchName}"`);
+            // Redirect to tickets.html with ticket details
+            const username = localStorage.getItem('Username');
+            const phoneNumber = localStorage.getItem('Phonenumber'); // Correct property name
+            const queryString = `?matchName=${matchName}&ticketsBooked=${ticketsToBook}&name=${username}&phoneNumber=${phoneNumber}`;
+            window.location.href = `tickets.html${queryString}`;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to book tickets. Please try again.');
+          });
+        }
+      }
+    </script>
+  </div>
+</body>
+</html>

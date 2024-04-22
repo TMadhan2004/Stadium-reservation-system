@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Match Ticket Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f1f1f1;
+            padding: 20px;
+            text-align: center;
+        }
+        .match-details {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #e0e0e0;
+        }
+        .team-names {
+            font-size: 20px;
+        }
+        .date-time {
+            color: #808080;
+        }
+        .venue {
+            text-align: center;
+            font-size: 18px;
+            padding: 10px 0;
+            background-color: #e0e0e0;
+        }
+        .info {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #f1f1f1;
+        }
+        .seat-selection {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .ground {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background-color: green;
+        }
+        .seat-map {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        .seat {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: green; /* Initially green */
+            cursor: pointer;
+        }
+        .seat.selected {
+            background-color: red;
+        }
+        .seat.unavailable {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+        }
+        .legend {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        .legend-item span {
+            margin-left: 10px;
+        }
+        .selected-seats {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Cricket Match Ticket Booking</h1>
+    </header>
+    <section class="match-details">
+        <div class="team-names">
+            India vs Australia
+        </div>
+        <div class="date-time">
+            Mon 23 Oct, 2:00 PM
+        </div>
+    </section>
+    <section class="venue">
+        M.A. Chidambaram Stadium
+    </section>
+    <section class="info">
+        Select your seat
+    </section>
+    <section class="seat-selection">
+        <div class="ground"></div>
+        <div class="seat-map">
+            <!-- Seats will be dynamically added here -->
+        </div>
+    </section>
+    <section class="legend">
+        <div class="legend-item">
+            <div class="seat"></div>
+            <span>Available</span>
+        </div>
+        <!-- Add more legend items if needed -->
+    </section>
+    <!-- Additional sections or content can be added here -->
+</body>
+</html>
