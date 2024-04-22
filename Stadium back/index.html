@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Matches</title>
+</head>
+<body>
+    <h1>Matches</h1>
+    <button id="showMatchesBtn">Show Matches</button>
+    <div id="matchesList"></div>
+
+    <script>
+        document.getElementById('showMatchesBtn').addEventListener('click', async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/matches');
+                const data = await response.json();
+                displayMatches(data);
+            } catch (error) {
+                console.error('Error fetching matches:', error);
+            }
+        });
+
+        function displayMatches(matches) {
+            const matchesList = document.getElementById('matchesList');
+            matchesList.innerHTML = ''; // Clear previous content
+
+            if (matches.length === 0) {
+                matchesList.textContent = 'No matches found.';
+                return;
+            }
+
+            const table = document.createElement('table');
+            const headerRow = table.insertRow();
+            ['Match Name', 'Time', 'Stadium Name', 'Tickets Available'].forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            matches.forEach(match => {
+                const row = table.insertRow();
+                ['MatchName', 'Time', 'StadiumName', 'Ticketsavailable'].forEach(propertyName => {
+                    const cell = row.insertCell();
+                    cell.textContent = match[propertyName];
+                });
+            });
+
+            matchesList.appendChild(table);
+        }
+    </script>
+</body>
+</html>
